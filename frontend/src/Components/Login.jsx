@@ -19,9 +19,6 @@ const Login = () => (
         password: '',
       }}
       validationSchema={SignupSchema}
-      onSubmit={ (values) => {
-        console.log(values);
-      }}
     >
       {({ errors, touched }) => (
         <Form>

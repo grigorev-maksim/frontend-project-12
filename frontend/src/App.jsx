@@ -10,6 +10,6 @@ const App = () => (
       <Route path="*" element={<Error />} />
     </Routes>
   </BrowserRouter>
-)
+);
 
 export default App;
