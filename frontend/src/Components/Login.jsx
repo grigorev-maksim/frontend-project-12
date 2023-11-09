@@ -21,7 +21,7 @@ const Login = () => {
   const inputRef = useRef();
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
-  const t = useTranslation();
+  const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
 
   useEffect(() => {
@@ -101,7 +101,7 @@ const Login = () => {
         variant="outline-primary"
         className="w-100 mb-3"
       >
-        {t('loginHeader')}
+        Войти
       </Button>
     </Form>
   );

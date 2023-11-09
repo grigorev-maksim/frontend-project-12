@@ -14,13 +14,6 @@ const App = () => {
           <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
             <div className="container"><a className="navbar-brand" href="/">Hexlet Chat</a></div>
           </nav>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<MainPage />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="*" element={<Error />} />
-            </Routes>
-          </BrowserRouter>
           <AuthProvider>
             <BrowserRouter>
               <Routes>
