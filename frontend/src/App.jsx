@@ -1,32 +1,45 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import React from 'react';
-import Error from './Components/Error';
-import Login from './Components/Login';
-import MainPage from './Components/MainPage';
-import AuthProvider from './Components/AuthProvider';
+import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
+import store from './slices/index.js';
+import ChatPage from './components/ChatPage';
+import LoginPage from './components/LoginPage';
+import SignupPage from './components/SignupPage';
+import NotFound from './components/NotFound';
+import AuthProvider from './components/AuthProvider';
+import PrivateRoute from './components/PrivateRoute';
+import Header from './components/Header';
+import 'react-toastify/dist/ReactToastify.css';
+import rollbarConfig from './utilits/rollbarConfig.js';
+import { navigationRoutes } from './routes.js';
 
-// eslint-disable-next-line arrow-body-style, padded-blocks
-const App = () => {
-  return (
-    <div className="h-100">
-      <div className="h-100" id="chat">
-        <div className="d-flex flex-column h-100">
-          <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
-            <div className="container"><a className="navbar-brand" href="/">Hexlet Chat</a></div>
-          </nav>
-          <AuthProvider>
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<MainPage />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="*" element={<Error />} />
-              </Routes>
-            </BrowserRouter>
-          </AuthProvider>
-        </div>
-        <div className="Toastify" />
-      </div>
-    </div>
-  );
-};
+const App = () => (
+  <RollbarProvider config={rollbarConfig}>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <AuthProvider>
+          <BrowserRouter>
+            <Header />
+            <ToastContainer />
+            <Routes>
+              <Route
+                path={navigationRoutes.chat()}
+                element={(
+                  <PrivateRoute>
+                    <ChatPage />
+                  </PrivateRoute>
+                )}
+              />
+              <Route path={navigationRoutes.login()} element={<LoginPage />} />
+              <Route path={navigationRoutes.signup()} element={<SignupPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
+      </Provider>
+    </ErrorBoundary>
+  </RollbarProvider>
+);
+
 export default App;
