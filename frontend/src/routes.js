@@ -1,11 +1,10 @@
-export const apiRoutes = {
-  data: () => '/api/v1/data',
-  login: () => '/api/v1/login',
-  signup: () => '/api/v1/signup',
-};
+const apiPath = '/api/v1';
 
-export const navigationRoutes = {
-  login: () => '/login',
-  signup: () => '/signup',
-  chat: () => '/',
+export default {
+  loginPath: () => [apiPath, 'login'].join('/'),
+  usersPath: () => [apiPath, 'data'].join('/'),
+  signupPath: () => [apiPath, 'signup'].join('/'),
+  mainPagePath: () => ('/'),
+  signupPagePath: () => ('/signup'),
+  loginPagePath: () => ('/login'),
 };

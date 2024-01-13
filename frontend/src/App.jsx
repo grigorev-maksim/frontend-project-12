@@ -1,45 +1,59 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Provider, ErrorBoundary } from '@rollbar/react';
+import {
+  Routes, Route, useLocation, Navigate, HashRouter,
+} from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
-import store from './slices/index.js';
-import ChatPage from './components/ChatPage';
-import LoginPage from './components/LoginPage';
-import SignupPage from './components/SignupPage';
-import NotFound from './components/NotFound';
-import AuthProvider from './components/AuthProvider';
-import PrivateRoute from './components/PrivateRoute';
-import Header from './components/Header';
 import 'react-toastify/dist/ReactToastify.css';
-import rollbarConfig from './utilits/rollbarConfig.js';
-import { navigationRoutes } from './routes.js';
+import Login from './components/Login';
+import ErrorPage from './components/Error';
+import MainPage from './components/Main';
+import AuthProvider from './components/Auth';
+import Navbar from './components/Navbar';
+import Modal from './components/modals/Modal';
+import Signup from './components/Signup';
+import routes from './routes';
+
+const PrivateRoute = ({ children }) => {
+  const location = useLocation();
+  const userId = localStorage.getItem('userId');
+  return (
+    userId ? children : <Navigate to={routes.loginPagePath()} state={{ from: location }} />
+  );
+};
+
+const rollbarConfig = {
+  accessToken: process.env.REACT_APP_ROLLBAR_TESTENV_TOKEN,
+  environment: 'testenv',
+};
 
 const App = () => (
-  <RollbarProvider config={rollbarConfig}>
+  <Provider config={rollbarConfig}>
     <ErrorBoundary>
-      <Provider store={store}>
-        <AuthProvider>
-          <BrowserRouter>
-            <Header />
+      <AuthProvider>
+        <HashRouter>
+          <div className="d-flex flex-column h-100">
+            <Modal />
             <ToastContainer />
+            <Navbar />
             <Routes>
               <Route
-                path={navigationRoutes.chat()}
+                path="/"
                 element={(
                   <PrivateRoute>
-                    <ChatPage />
+                    <MainPage />
                   </PrivateRoute>
-                )}
+          )}
               />
-              <Route path={navigationRoutes.login()} element={<LoginPage />} />
-              <Route path={navigationRoutes.signup()} element={<SignupPage />} />
-              <Route path="*" element={<NotFound />} />
+              <Route path="*" element={<ErrorPage />} />
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<Signup />} />
             </Routes>
-          </BrowserRouter>
-        </AuthProvider>
-      </Provider>
+          </div>
+        </HashRouter>
+      </AuthProvider>
     </ErrorBoundary>
-  </RollbarProvider>
+  </Provider>
 );
 
 export default App;

@@ -1,8 +1,8 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "[![Actions Status](https://github.com/grigorev-maksim/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/grigorev-maksim/frontend-project-12/actions)",
-  "main": "index.html",
+  "description": "Chat is simplified clone of Slack communication service. It allows you to create new channels, delete and rename them, add new users and chat with them.",
+  "main": "frontend/src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx start-server -s ./frontend/build",
